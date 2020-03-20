@@ -19,6 +19,7 @@ import os
 import json
 import collections
 import psutil
+import subprocess
 
 def get_uptime():
 	return int(time.time() - psutil.boot_time())
@@ -85,16 +86,21 @@ class Traffic:
 		return avgrx, avgtx
 
 def liuliang():
-	NET_IN = 0
-	NET_OUT = 0
-	vnstat=os.popen('vnstat --dumpdb').readlines()
-	for line in vnstat:
-		if line[0:4] == "m;0;":
-			mdata=line.split(";")
-			NET_IN=int(mdata[3])*1024*1024
-			NET_OUT=int(mdata[4])*1024*1024
-			break
-	return NET_IN, NET_OUT
+        NET_IN = 0
+        NET_OUT = 0
+        vnstat = subprocess.Popen('vnstat --json', shell=True, stdout=subprocess.PIPE)
+        #vnstat=os.popen('vnstat --json').read()
+        vnjson = json.dumps(vnstat.communicate())
+        #print vnjson
+        mrs = json.loads(vnjson)
+        mrss = json.loads(mrs[0])
+        #print mrss["interfaces"][0]["traffic"]["total"]
+
+        NET_IN = int(mrss['interfaces'][0]["traffic"]["total"]["rx"])
+        NET_OUT = int(mrss["interfaces"][0]["traffic"]["total"]["tx"])
+
+        return NET_IN, NET_OUT
+
 
 def get_network(ip_version):
 	if(ip_version == 4):
