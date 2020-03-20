@@ -59,7 +59,7 @@ check_pid_client(){
 }
 Download_Server_Status_server(){
 	cd "/usr/local"
-	wget -N --no-check-certificate "https://raw.githubusercontent.com/P3TERX/ServerStatus-V/master/server.zip"
+	wget -N --no-check-certificate "https://raw.githubusercontent.com/whut-share/ServerStatus-V/master/server.zip"
 	[[ ! -e "server.zip" ]] && echo -e "${Error} ServerStatus-V 服务端下载失败 !" && exit 1
 	unzip server.zip -d ./ServerStatus-server && rm -rf server.zip
 	[[ ! -e "ServerStatus-server" ]] && echo -e "${Error} ServerStatus-V 服务端解压失败 !" && exit 1
@@ -78,21 +78,21 @@ Download_Server_Status_client(){
 	cd "/usr/local"
 	[[ ! -e ${file} ]] && mkdir "${file}"
 	cd "${file}"
-	wget -N --no-check-certificate "https://raw.githubusercontent.com/P3TERX/ServerStatus-V/master/clients/client-psutil.py"
+	wget -N --no-check-certificate "https://raw.githubusercontent.com/whut-share/ServerStatus-V/master/clients/client-psutil.py"
 	[[ ! -e "client-psutil.py" ]] && echo -e "${Error} ServerStatus-V 客户端下载失败 !" && exit 1
 	mv client-psutil.py status-client.py
 	[[ ! -e "status-client.py" ]] && echo -e "${Error} ServerStatus-V 客户端文件重命名失败 !" && rm -rf client-psutil.py && exit 1
 }
 Service_Server_Status_server(){
 	if [[ ${release} = "centos" ]]; then
-		if ! wget --no-check-certificate "https://raw.githubusercontent.com/P3TERX/ServerStatus-V/master/init.d/server_status_server_centos" -O /etc/init.d/status-server; then
+		if ! wget --no-check-certificate "https://raw.githubusercontent.com/whut-share/ServerStatus-V/master/init.d/server_status_server_centos" -O /etc/init.d/status-server; then
 			echo -e "${Error} ServerStatus-V 服务端服务管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/status-server
 		chkconfig --add status-server
 		chkconfig status-server on
 	else
-		if ! wget --no-check-certificate "https://raw.githubusercontent.com/P3TERX/ServerStatus-V/master/init.d/server_status_server_debian" -O /etc/init.d/status-server; then
+		if ! wget --no-check-certificate "https://raw.githubusercontent.com/whut-share/ServerStatus-V/master/init.d/server_status_server_debian" -O /etc/init.d/status-server; then
 			echo -e "${Error} ServerStatus-V 服务端服务管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/status-server
@@ -102,14 +102,14 @@ Service_Server_Status_server(){
 }
 Service_Server_Status_client(){
 	if [[ ${release} = "centos" ]]; then
-		if ! wget --no-check-certificate "https://raw.githubusercontent.com/P3TERX/ServerStatus-V/master/init.d/server_status_client_centos" -O /etc/init.d/status-client; then
+		if ! wget --no-check-certificate "https://raw.githubusercontent.com/whut-share/ServerStatus-V/master/init.d/server_status_client_centos" -O /etc/init.d/status-client; then
 			echo -e "${Error} ServerStatus-V 客户端服务管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/status-client
 		chkconfig --add status-client
 		chkconfig status-client on
 	else
-		if ! wget --no-check-certificate "https://raw.githubusercontent.com/P3TERX/ServerStatus-V/master/init.d/server_status_client_debian" -O /etc/init.d/status-client; then
+		if ! wget --no-check-certificate "https://raw.githubusercontent.com/whut-share/ServerStatus-V/master/init.d/server_status_client_debian" -O /etc/init.d/status-client; then
 			echo -e "${Error} ServerStatus-V 客户端服务管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/status-client
@@ -783,14 +783,14 @@ post-down iptables-save > /etc/iptables.up.rules" >> /etc/network/interfaces
 }
 Update_Shell(){
 	echo -e "当前版本为 [ ${sh_ver} ]，开始检测最新版本..."
-	sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/P3TERX/ServerStatus-V/master/status.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1)
+	sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/whut-share/ServerStatus-V/master/status.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1)
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && exit 0
 	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
 		echo -e "发现新版本[ ${sh_new_ver} ]，是否更新？[Y/n]"
 		stty erase '^H' && read -p "(默认: y):" yn
 		[[ -z "${yn}" ]] && yn="y"
 		if [[ ${yn} == [Yy] ]]; then
-			wget -N --no-check-certificate https://raw.githubusercontent.com/P3TERX/ServerStatus-V/master/status.sh && chmod +x status.sh && bash status.sh
+			wget -N --no-check-certificate https://raw.githubusercontent.com/whut-share/ServerStatus-V/master/status.sh && chmod +x status.sh && bash status.sh
 			echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !"
 		else
 			echo && echo "已取消..." && echo
@@ -801,7 +801,7 @@ Update_Shell(){
 }
 menu_client(){
 echo && echo -e " ServerStatus-V 安装&管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
- https://github.com/P3TERX/ServerStatus-V
+ https://github.com/whut-share/ServerStatus-V
   
  ${Green_font_prefix}0.${Font_color_suffix} 切换到 服务端菜单
 ——————————————
@@ -867,7 +867,7 @@ esac
 }
 menu_server(){
 echo && echo -e " ServerStatus-V 安装&管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
- https://github.com/P3TERX/ServerStatus-V
+ https://github.com/whut-share/ServerStatus-V
   
  ${Green_font_prefix}0.${Font_color_suffix} 切换到 客户端菜单
 ——————————————
