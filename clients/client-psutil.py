@@ -26,6 +26,7 @@ import urllib2
 import time
 
 def get_host_ip():
+	global PUBLIC_IP
 	t = int(time.time())
 	if t % IP_INTERVAL == 0:
 		PUBLIC_IP = urllib2.urlopen('http://ip.42.pl/raw').read()	
