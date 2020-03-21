@@ -9,6 +9,8 @@ PORT = 35601
 USER = "USER"
 PASSWORD = "USER_PASSWORD"
 INTERVAL = 1 # 更新间隔
+IP_INTERVAL = 300 # 更新间隔
+PUBLIC_IP = ''
 
 
 import socket
@@ -20,6 +22,14 @@ import json
 import collections
 import psutil
 import subprocess
+import urllib2
+import time
+
+def get_host_ip():
+	t = int(time.time())
+	if t % IP_INTERVAL == 0:
+		PUBLIC_IP = urllib2.urlopen('http://ip.42.pl/raw').read()	
+	return PUBLIC_IP
 
 def get_uptime():
 	return int(time.time() - psutil.boot_time())
@@ -178,6 +188,7 @@ if __name__ == '__main__':
 				array['network_tx'] = NetTx
 				array['network_in'] = NET_IN
 				array['network_out'] = NET_OUT
+				array['custom'] = get_host_ip()
 
 				s.send("update " + json.dumps(array) + "\n")
 		except KeyboardInterrupt:

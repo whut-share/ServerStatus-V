@@ -87,6 +87,7 @@ function uptime() {
 					"<tr id=\"r" + i + "\" data-toggle=\"collapse\" data-target=\"#rt" + i + "\" class=\"accordion-toggle " + hack + "\">" +
 						"<td id=\"online4\"><div class=\"progress\"><div style=\"width: 100%;\" class=\"progress-bar progress-bar-warning\"><small>加载中</small></div></div></td>" +
 						"<td id=\"name\">加载中</td>" +
+						"<td id=\"ipv4\">加载中</td>" +
 						"<td id=\"type\">加载中</td>" +
 						"<!-- td id=\"host\">加载中</td -->" +
 						"<td id=\"location\">加载中</td>" +
@@ -146,6 +147,7 @@ function uptime() {
 			TableRow.children["location"].innerHTML = result.servers[i].location;
 			if (!result.servers[i].online4 && !result.servers[i].online6) {
 				if (server_status[i]) {
+					TableRow.children["ipv4"].innerHTML = "–";
 					TableRow.children["uptime"].innerHTML = "–";
 					TableRow.children["load"].innerHTML = "–";
 					TableRow.children["network"].innerHTML = "–";
@@ -173,6 +175,9 @@ function uptime() {
 
 				// Uptime
 				TableRow.children["uptime"].innerHTML = result.servers[i].uptime;
+
+				// ipv4
+				TableRow.children["ipv4"].innerHTML = result.servers[i].custom;// Uptime
 
 				// Load
 				if(result.servers[i].load == -1) {
