@@ -2,6 +2,7 @@
 var error = 0;
 var d = 0;
 var server_status = new Array();
+var server_ips = new Array();
 
 function timeSince(date) {
 	if(date == 0)
@@ -109,6 +110,7 @@ function uptime() {
 				TableRow = $("#servers tr#r" + i);
 				ExpandRow = $("#servers #rt" + i);
 				server_status[i] = true;
+				server_ips[i] = "未定义";
 			}
 			TableRow = TableRow[0];
 			if(error) {
@@ -140,6 +142,9 @@ function uptime() {
 			// Type
 			TableRow.children["type"].innerHTML = result.servers[i].type;
 
+			// IPV4
+			TableRow.children["ipv4"].innerHTML = server_ips[i];
+
 			// Host
 			//TableRow.children["host"].innerHTML = result.servers[i].host;
 
@@ -147,7 +152,7 @@ function uptime() {
 			TableRow.children["location"].innerHTML = result.servers[i].location;
 			if (!result.servers[i].online4 && !result.servers[i].online6) {
 				if (server_status[i]) {
-					TableRow.children["ipv4"].innerHTML = "–";
+					//TableRow.children["ipv4"].innerHTML = "–";
 					TableRow.children["uptime"].innerHTML = "–";
 					TableRow.children["load"].innerHTML = "–";
 					TableRow.children["network"].innerHTML = "–";
@@ -176,8 +181,10 @@ function uptime() {
 				// Uptime
 				TableRow.children["uptime"].innerHTML = result.servers[i].uptime;
 
+				server_ips[i] = result.servers[i].custom;
+
 				// ipv4
-				TableRow.children["ipv4"].innerHTML = result.servers[i].custom;// Uptime
+				TableRow.children["ipv4"].innerHTML = result.servers[i].custom;// ipv4
 
 				// Load
 				if(result.servers[i].load == -1) {
